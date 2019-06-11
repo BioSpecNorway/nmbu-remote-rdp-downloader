@@ -44,6 +44,7 @@ def main(username, password, app_name, output_filename):
         launch = s.get('https://portal.nmbu.no' + launch_uri, headers=headers,
                        allow_redirects=False)
         link = urllib.parse.unquote(launch.headers['Location'])
+        print('link: {}'.format(link))
 
         # convert link to text to save as .rdp
         # remove scheme from the start rdp://a?
