@@ -4,7 +4,7 @@ import requests
 import urllib.parse
 
 
-def main(username, password, app_name, output_filename):
+def main(username, password, app_name, output_filename, only_link):
     data = 'username={}&password={}&vhost=standard'.format(
         urllib.parse.quote(username),
         urllib.parse.quote(password)
@@ -46,12 +46,13 @@ def main(username, password, app_name, output_filename):
         link = urllib.parse.unquote(launch.headers['Location'])
         print('link: {}'.format(link))
 
-        # convert link to text to save as .rdp
-        # remove scheme from the start rdp://a?
-        content = link[8:].replace('&', '\n').replace('=', ':')
+        if not only_link:  # save file also
+            # convert link to text to save as .rdp
+            # remove scheme from the start rdp://a?
+            content = link[8:].replace('&', '\n').replace('=', ':')
 
-        with open(output_filename, 'w') as f:
-            f.write(content)
+            with open(output_filename, 'w') as f:
+                f.write(content)
 
         print('Done!')
 
@@ -64,10 +65,11 @@ if __name__ == '__main__':
                         help='name of application (default=RealTek)')
     parser.add_argument('-f', '--filename',
                         help='path to save .rdp file')
+    parser.add_argument('-l', '--only-link', action='store_true', default=False)
     args = parser.parse_args()
     if args.filename is None:
         args.filename = args.app_name + '.rdp'
 
     username = input('Username: ')
     password = getpass()
-    main(username, password, args.app_name, args.filename)
+    main(username, password, args.app_name, args.filename, args.only_link)

@@ -25,6 +25,7 @@ optional arguments:
                         name of application (default=RealTek)
   -f FILENAME, --filename FILENAME
                         path to save .rdp file
+  -l --only-link        prints link only (no saving file)
 ```
 
 ### Examples
